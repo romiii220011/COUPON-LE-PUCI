@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const nodemailer = require('nodemailer');
+const fetch = require('node-fetch');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,32 +14,30 @@ app.get('/', (req, res) => {
 app.post('/use-coupon', (req, res) => {
     const { couponId } = req.body;
 
-    // Configura il trasporto email
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'raminders714@gmail.com',
-            pass: 'Rr24062001'
-        }
-    });
+    // Configura Telegram
+    const botToken = '7953413659:AAHQl6jd0xg76jPd95ODfPeavFUl0fXjJMc';
+    const chatId = '1248191242';
+    const message = `Il coupon con ID: ${couponId} è stato usato.`;
 
-    // Configura i dettagli dell'email
-    const mailOptions = {
-        from: 'raminders714@gmail.com',
-        to: 'raminders714@gmail.com',
-        subject: 'Coupon Usato',
-        text: `Il coupon con ID: ${couponId} è stato usato.`
-    };
-
-    // Invia l'email
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error('Errore nell\'invio dell\'email:', error);
-            res.status(500).send('Errore nell\'invio dell\'email');
-        } else {
-            console.log('Email inviata:', info.response);
-            res.status(200).send('Notifica inviata');
-        }
+    // Invia il messaggio Telegram
+    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            chat_id: chatId,
+            text: message
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Messaggio inviato:', data);
+        res.status(200).send('Notifica inviata');
+    })
+    .catch(error => {
+        console.error('Errore nell\'invio del messaggio:', error);
+        res.status(500).send('Errore nell\'invio del messaggio');
     });
 });
 
