@@ -19,7 +19,7 @@ app.post('/use-coupon', (req, res) => {
         service: 'gmail',
         auth: {
             user: 'raminders714@gmail.com',
-            pass: 'lepucitiamo'
+            pass: 'Rr24062001'
         }
     });
 
