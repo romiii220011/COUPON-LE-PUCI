@@ -7,6 +7,10 @@ const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
+app.get('/', (req, res) => {
+    res.send('Server funzionante!');
+});
+
 app.post('/use-coupon', (req, res) => {
     const { couponId } = req.body;
 
