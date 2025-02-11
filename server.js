@@ -25,7 +25,7 @@ app.post('/use-coupon', (req, res) => {
         to: 'raminders714@gmail.com',
         subject: 'Coupon Usato',
         text: `Il coupon con ID: ${couponId} è stato usato.`
-    });
+    };
 
     // Invia l'email
     transporter.sendMail(mailOptions, (error, info) => {
